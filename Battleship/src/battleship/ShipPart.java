@@ -9,7 +9,7 @@ public class ShipPart extends Field{
 		this.x = x;
 		this.y = y;
 		this.fieldID = id;
-		this.visual = GameLogic.test;
+		this.visual = GameLogic.water;
 	}
 	@Override
 	public void shootField()

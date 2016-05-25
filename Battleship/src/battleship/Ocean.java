@@ -4,7 +4,7 @@ public class Ocean {
 
 	// Lokale Variablen werden deklariert und initialisiert
 
-	private static  int size = 0;
+	public static  int size = 0;
 
 	// Das Spielfeld ist ein Dualer Array aus Field-Objekten
 
@@ -15,7 +15,7 @@ public class Ocean {
 
 	// Spielfeld wird um Randfelder erweitert
 
-		this.size = fieldSize +2 ;
+		Ocean.size = fieldSize +2 ;
 		this.ocean = new Field [size][size];
 
 	// Ozean wird mit Wasserfeldern und Randfeldern belegt
@@ -38,16 +38,16 @@ public class Ocean {
 					this.ocean[x][0].setVisual(" " + x + " ");	// Beschriftung links
 				}
 
-				if (y == (this.size -1))
+				if (y == (Ocean.size -1))
 				{
-					this.ocean[x][size -1].setVisual("   ");			// Leere Anzeige rechts
-					this.ocean[0][size -1].setVisual("   ");			// Letzte Beschriftung wird geleert
+					this.ocean[x][Ocean.size -1].setVisual("   ");			// Leere Anzeige rechts
+					this.ocean[0][Ocean.size -1].setVisual("   ");			// Letzte Beschriftung wird geleert
 				}
 
-				if (x == (this.size -1))
+				if (x == (Ocean.size -1))
 				{
-					this.ocean[size -1][y].setVisual("   ");			// Leere Anzeige unten
-					this.ocean[size -1][0].setVisual("   ");			// Letzte Beschriftung wird geleert
+					this.ocean[Ocean.size -1][y].setVisual("   ");			// Leere Anzeige unten
+					this.ocean[Ocean.size -1][0].setVisual("   ");			// Letzte Beschriftung wird geleert
 				}
 
 
@@ -63,8 +63,8 @@ public class Ocean {
 				this.ocean[x][y].setFieldType(FieldType.Water);
 				this.ocean[0][y].setFieldType(FieldType.Border);			// Rand oben
 				this.ocean[x][0].setFieldType(FieldType.Border);			// Rand links
-				this.ocean[size -1][y].setFieldType(FieldType.Border);	// Rand unten
-				this.ocean[x][size -1].setFieldType(FieldType.Border);	// Rand rechts
+				this.ocean[Ocean.size -1][y].setFieldType(FieldType.Border);	// Rand unten
+				this.ocean[x][Ocean.size -1].setFieldType(FieldType.Border);	// Rand rechts
 			}
 	}
 
@@ -84,10 +84,5 @@ public class Ocean {
 		}
 	}
 
-	// Gibt die Größe des Ozeans an
 
-	static int getFieldSize()
-	{
-		return size;
-	}
 }

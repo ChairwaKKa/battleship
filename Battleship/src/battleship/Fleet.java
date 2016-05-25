@@ -9,7 +9,6 @@ import battleship.ShipPart;
 public class Fleet {
 	private int placeableShipParts = 0;
 	private int totalNumberOfShips = 0;
-	private int errorCounter =0;
 
 	public ArrayList<Ship> fleet = new ArrayList<Ship>();
 
@@ -71,80 +70,103 @@ public class Fleet {
 		for (Ship ship : fleet)									// Es wird durch die Flotte durchiteriert und jedes Schiff aufs Feld gesetzt
 		{
 			reverse			= false;
-			orientation 	= GameLogic.generateRandomBool();		// Für jedes Schiff wird die Orientierung ein mal gewürfelt
 			int shipSize 	= ship.getShipLength();
 			int shipID		= ship.getShipID();
 			do
 			{
-				anchorX = GameLogic.generateRandomInt();
-				anchorY = GameLogic.generateRandomInt();
+				anchorX		= GameLogic.generateRandomInt();
+				anchorY 	= GameLogic.generateRandomInt();
+				orientation = GameLogic.generateRandomBool();
 
-				shipCanBePLacedOnField 	= GameLogic.shipCanBeSetOnField(anchorX, anchorY, oc, orientation, shipSize);
+				shipCanBePLacedOnField 	= GameLogic.shipCanBeSetOnField(anchorX, anchorY, oc, orientation, shipSize, ship);
 
 			} while (!shipCanBePLacedOnField);					// Solange das Schiff nicht platziert werden kann, soll ein neuer Ankerpunkt gesucht werden.
 
 			ship.setAnchorX(anchorX);
 			ship.setAnchorY(anchorY);
+			reverse = ship.getReverse();
 	/*
 	 * Wenn ein Schiff platziert werden kann, wird es mit den zuletzt gewürfelten Werten auf den Ozean gesetzt
 	 */
 			if (orientation == GameLogic.horizontal)
 			{
-				try
+				if (!reverse)
 				{
 					for (int i = 0; i < shipSize; i++)
 					{
 						oc.ocean[anchorX][anchorY + i] = new ShipPart(anchorX, anchorY+i, shipID);			// Schiffsteile werden mit der jeweiligen Schiffsnummer erzeugt
 						oc.ocean[anchorX][anchorY + i].setFieldType(FieldType.ShipPart);
 					}
-				}catch (Exception e)
+				}
+				else if (reverse)
 				{
 					for (int i = 0; i < shipSize; i++)
 					{
 						oc.ocean[anchorX][anchorY - i] = new ShipPart(anchorX, anchorY+i, shipID);			// Schiffsteile werden mit der jeweiligen Schiffsnummer erzeugt
 						oc.ocean[anchorX][anchorY - i].setFieldType(FieldType.ShipPart);
 					}
-					reverse = true;
 				}
 
 			}
 
-
 			if (orientation == GameLogic.vertical)
 			{
-				try
+				if (!reverse)
 				{
 					for (int j = 0; j < shipSize; j++)
 					{
 						oc.ocean[anchorX + j][anchorY] = new ShipPart(anchorX + j,anchorY, shipID);			// Schiffsteile werden mit der jeweiligen Schiffsnummer erzeugt
 						oc.ocean[anchorX + j][anchorY].setFieldType(FieldType.ShipPart);
 					}
-				} catch (Exception e)
+				} else if (reverse)
 				{
 					for (int j = 0; j < shipSize; j++)
 					{
 						oc.ocean[anchorX - j][anchorY] = new ShipPart(anchorX + j,anchorY, shipID);			// Schiffsteile werden mit der jeweiligen Schiffsnummer erzeugt
 						oc.ocean[anchorX - j][anchorY].setFieldType(FieldType.ShipPart);
 					}
-					reverse = true;
 				}
-
 			}
 	/*
 	 * Wenn ein Schiff platziert worden ist, werden Randfelder um es herumgesetzt
 	 */
 			GameLogic.setShipBorder(oc, orientation, anchorX, anchorY, shipSize, reverse);
-if (ship.getShipID() == this.totalNumberOfShips)
-{
-	errorCounter ++;
-	System.out.print("Durchlauf Nummer: "+ errorCounter + "\n");
-}
 		}
+	}
+
+	public void checkFleet(Ocean oc)
+	{
+		for (int i = 0; i < this.fleet.size(); i++)
+		{
+			this.fleet.get(i).alreadySunk(oc);
+			if (this.fleet.get(i).getIsDestroyed())
+			{
+				changeVisualForSunkShips(oc, this.fleet.get(i));
+				this.fleet.remove(i);
+			}
+		}
+	}
+
+	public void changeVisualForSunkShips(Ocean oc, Ship ship)
+	{
+		for (int x = 0; x < oc.ocean.length; x++)
+			for (int y= 0; y < oc.ocean[x].length; y++)
+			{
+				if (ship.getShipID() == oc.ocean[x][y].getFieldID())
+				{
+					oc.ocean[x][y].setVisual(GameLogic.sinkShip);
+				}
+			}
+	}
+
+	public boolean isDefeted()
+	{
+		return (this.fleet.size() == 0);
 	}
 
 	public int getNumberOfShips()
 	{
-		return totalNumberOfShips;
+		return this.fleet.size();
 	}
 
 }

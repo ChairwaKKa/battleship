@@ -14,7 +14,6 @@ public class GameLogic {
 	public final static String hitShip  = " X ";
 	public final static String sinkShip = " V ";
 	public final static String space    = "   ";
-	public final static String  test    = " S ";
 
 	// Ein Random Objekt wird erzeugt
 	public static Random random = new Random();
@@ -26,7 +25,7 @@ public class GameLogic {
 	// Es wird eine zufällige ganze Zahl ausgegeben
 	public static int generateRandomInt()
 	{
-		return (random.nextInt((Ocean.getFieldSize()-2))+1);
+		return (random.nextInt((Ocean.size-2))+1);
 	}
 
 	// Es wird ein zufälliger boolscher Wert ausgegeben
@@ -38,43 +37,48 @@ public class GameLogic {
 	/*
 	 * Es wird geprüft ob mit den gegebenen Werten ein Schiff gesetzt werden kann
 	 */
-	public static boolean shipCanBeSetOnField(int x, int y, Ocean oc, boolean orientation, int shipSize)
+	public static boolean shipCanBeSetOnField(int x, int y, Ocean oc, boolean orientation, int shipSize, Ship ship)
 	{
-		boolean positionabel = true;
+		boolean placeable	= false;
+		boolean reverse		= false;		// gibt an, ob das Schiff in die andere Richtung gebaut wird
 
 		if (orientation == horizontal)
 		{
-			if ((y + shipSize) > (Ocean.getFieldSize() -2))
+			if ((y + shipSize) > (Ocean.size -2))
 			{
-				positionabel = false;
+				placeable 	= false;
 			}
 			else
 			{
+				placeable	= true;
+
 				for (int i = 0; i < shipSize; i++)
 				{
-
-					if (oc.ocean[x][y + i].getFieldType() == FieldType.Water)
+					if (placeable && (oc.ocean[x][y + i].getFieldType() == FieldType.Water))
 					{
-						positionabel = true;
+						placeable = true;
 					}
 					else
 					{
-						return false;
+						placeable = false;
 					}
 				}
 			}
 
-			if (!positionabel)
+			if (!placeable)
 			{
+				reverse = true;
 				for (int i = 0; i < shipSize; i++)
 				{
-					if (oc.ocean[x][y - i].getFieldType() == FieldType.Water)
+					if (reverse && (oc.ocean[x][y - i].getFieldType() == FieldType.Water))
 					{
-						positionabel = true;
+						placeable 	= true;
+						reverse 	= true;
 					}
 					else
 					{
-						return false;
+						placeable	= false;
+						reverse		= false;
 					}
 				}
 			}
@@ -82,48 +86,49 @@ public class GameLogic {
 
 		else if (orientation == vertical)
 		{
-			if ((x + shipSize) > (Ocean.getFieldSize() -2))
+			if ((x + shipSize) > (Ocean.size -2))
 			{
-				positionabel = false;
+				placeable 	= false;
 			}
 			else
 			{
+				placeable 	= true;
+
 				for (int i = 0; i < shipSize; i++)
 				{
 
-					if (oc.ocean[x + i][y].getFieldType() == FieldType.Water)
+					if (placeable && (oc.ocean[x + i][y].getFieldType() == FieldType.Water))
 					{
-						positionabel = true;
+						placeable = true;
 					}
 					else
 					{
-						return false;
+						placeable = false;
 					}
 				}
 			}
 
-			if (!positionabel)
+			if (!placeable)
 			{
+				reverse = true;
+
 				for (int i = 0; i < shipSize; i++)
 				{
-					if (oc.ocean[x -i][y].getFieldType() == FieldType.Water)
+					if (reverse && (oc.ocean[x -i][y].getFieldType() == FieldType.Water))
 					{
-						positionabel = true;
+						placeable = true;
 					}
 					else
 					{
-						return false;
+						placeable 	= false;
+						reverse		= false;
 					}
 				}
 			}
 		}
 
-		else
-		{
-			positionabel = false;
-		}
-
-		return positionabel;
+		ship.setReverse(reverse);
+		return placeable;
 	}
 
 	/*

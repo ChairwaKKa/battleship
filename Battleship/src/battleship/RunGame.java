@@ -2,6 +2,8 @@ package battleship;
 
 import javax.swing.JOptionPane;
 
+
+
 public class RunGame {
 
 	public static void main(String[] args) {
@@ -37,38 +39,44 @@ public class RunGame {
 		System.out.print("Ganze "+ fleet.getNumberOfShips() +" wurden auf dem Ozean verteilt.\nOh ha!\n");
 		oc.showOcean();
 
-		int x =0, y =0;
+		int x = 0, y = 0, shootCounter = 0, numberOfTries = 0;
 		do
 		{
 			gameEnd = false;
-			input = JOptionPane.showInputDialog("Zielkoordinaten:");
-			try
-			{
-				x = Integer.parseInt(input.substring(0, 1));
-			} catch (Exception e)
-			{
-				gameEnd = true;
-				JOptionPane.showMessageDialog(null, "Spiel beendet");
-			}
 
-			try
+			do
 			{
-				y = Integer.parseInt(input.substring(1, 2));
-			} catch (Exception e)
-			{
-				gameEnd = true;
-				JOptionPane.showMessageDialog(null, "Spiel beendet");
-			}
+				input = JOptionPane.showInputDialog("Geben Sie bitte die Zielkoordinate ein!");
+				InputValidity iv = new InputValidity(input);
+				validInput = iv.validInputPattern(size);
+				x = iv.getX();
+				y = iv.getY();
 
-			if (oc.ocean[x][y].alreadyGotHit())
+			} while (!validInput);
+
+			// Es wird nur auf ein Zielfeld geschossen, welches noch nicht beschossen wurde
+
+			if (!oc.ocean[x][y].alreadyGotHit())
 			{
-				gameEnd = true;
-				JOptionPane.showMessageDialog(null, "Spiel beendet");
+				oc.ocean[x][y].shootField();
+				fleet.checkFleet(oc);				
+				oc.showOcean();
+
+				shootCounter ++;
+				numberOfTries = shootCounter;
+				System.out.print("Es sind nur noch " + fleet.getNumberOfShips() + " Schiffe auf dem Feld!");
 			}
 			else
 			{
-				oc.ocean[x][y].shootField();
-				oc.showOcean();
+				JOptionPane.showMessageDialog(null, "Auf dieses Feld wurde bereits geschossen.");
+			}
+
+			// Es wird nach dem Schuss geprüft, ob die gesamte Flotte zerstört wurde
+
+			if (fleet.isDefeted())
+			{
+				gameEnd = true;
+				JOptionPane.showMessageDialog(null, "Sie haben gewonnen und " + numberOfTries + " Versuche benötigt!");
 			}
 
 		} while(!gameEnd);

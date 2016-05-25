@@ -1,12 +1,13 @@
 package battleship;
 
 public class Ship {
-	private int shipID = 0,anchorX = 0, anchorY = 0;
-	private static int shipCounter = 0;
-	private int shipLength = 0;
-	private boolean isDestroyed = false;
-	private boolean orientation = GameLogic.horizontal;
-	private ShipType type = ShipType.Destroyer;
+	private int shipID = 0, anchorX = 0, anchorY = 0;
+	private static int shipCounter 	= 0;
+	private int shipLength			= 0;
+	private boolean isDestroyed 	= false;
+	private boolean orientation 	= GameLogic.horizontal;
+	private ShipType type 			= ShipType.Destroyer;
+	private boolean reverse			= false;
 
 
 
@@ -31,7 +32,6 @@ public class Ship {
 		this.anchorX = 0;
 		this.anchorY = 0;
 		this.isDestroyed = false;
-		//System.out.print("\nEin \"" + this.type + "\" wurde mit der ID " + shipID + " erstellt\n");
 
 	}
 
@@ -45,6 +45,21 @@ public class Ship {
 		this.anchorX = x;
 		this.anchorY = y;
 		this.isDestroyed = false;
+	}
+
+	public void alreadySunk(Ocean oc)
+	{
+		int shipPartCounter = 0;
+
+		for (int x = 0; x < oc.ocean.length ; x ++)
+			for (int y = 0; y < oc.ocean[x].length; y++)
+			{
+				if ((this.shipID == oc.ocean[x][y].getFieldID()) && oc.ocean[x][y].alreadyGotHit())
+				{
+					shipPartCounter++;
+				}
+			}
+		this.isDestroyed = (shipPartCounter == this.shipLength);
 	}
 
 	public int getShipID()
@@ -87,14 +102,24 @@ public class Ship {
 		this.anchorY = y;
 	}
 
-	public boolean isItAWreck()
+	public boolean getIsDestroyed()
 	{
 		return this.isDestroyed;
 	}
 
-	public void sinkShip()
+	public void setIsDestroyed()
 	{
 		this.isDestroyed = true;
+	}
+
+	public void setReverse (boolean r)
+	{
+		this.reverse = r;
+	}
+
+	public boolean getReverse()
+	{
+		return this.reverse;
 	}
 
 }
