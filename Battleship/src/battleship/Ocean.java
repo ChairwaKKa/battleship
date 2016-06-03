@@ -1,5 +1,13 @@
 package battleship;
 
+/**
+ * Spielfeld als dualer Array aus Feld Objekten
+ * --> FieldType
+ *
+ * @author oliver2
+ *
+ */
+
 public class Ocean {
 
 	// Lokale Variablen werden deklariert und initialisiert
@@ -55,6 +63,10 @@ public class Ocean {
 		this.ocean[0][0].setVisual("    ");						// Im Ursprung 4 Leerzeichen
 	}
 
+	/**
+	 * Die Feldtypen werden initialisiert
+	 * --> FieldType
+	 */
 	public void initFieldTypes()
 	{
 		for (int x = 0; x < this.ocean.length; x ++)
@@ -68,8 +80,10 @@ public class Ocean {
 			}
 	}
 
-// Zeigt den Ozean als Konsolenausgabe an
 
+	/**
+	 * Stellt den Ozean auf dem Monitor dar
+	 */
 	public void showOcean()
 	{
 		System.out.print("\n\n\n\n\n\n");
@@ -78,7 +92,6 @@ public class Ocean {
 			for (int y = 0; y < this.ocean[x].length; y ++)
 			{
 				System.out.print(this.ocean[x][y].getVisual());
-				//System.out.print(" " + ocean[x][y].fieldID + " ");
 			}
 			System.out.print("\n");
 		}

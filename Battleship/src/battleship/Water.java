@@ -1,5 +1,11 @@
 package battleship;
 
+/**
+ * Beschreibt ein Wasserfeld
+ *
+ * @author oliver2
+ *
+ */
 public class Water extends Field{
 	protected FieldType ft = FieldType.Water;
 
@@ -10,6 +16,7 @@ public class Water extends Field{
 		this.visual = GameLogic.water;
 	}
 
+	@Override
 	public void shootField()
 	{
 		this.gotHit = true;

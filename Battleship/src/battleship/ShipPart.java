@@ -1,5 +1,11 @@
 package battleship;
 
+/**
+ * Schiffsteil eines Schiffes
+ *
+ * @author oliver2
+ *
+ */
 public class ShipPart extends Field{
 	protected FieldType ft = FieldType.ShipPart;
 
@@ -11,6 +17,8 @@ public class ShipPart extends Field{
 		this.fieldID = id;
 		this.visual = GameLogic.water;
 	}
+
+
 	@Override
 	public void shootField()
 	{

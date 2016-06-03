@@ -1,5 +1,11 @@
 package battleship;
 
+/**
+ * Beschreibt die Eigenschaften und Methoden eines Schiffes
+ *
+ * @author oliver2
+ *
+ */
 public class Ship {
 	private int shipID = 0, anchorX = 0, anchorY = 0;
 	private static int shipCounter 	= 0;
@@ -47,7 +53,14 @@ public class Ship {
 		this.isDestroyed = false;
 	}
 
-	public void alreadySunk(Ocean oc)
+	/**
+	 * Prüft, ob die dem Schiff zugehörigen Schiffsteile getroffen wurden und markiert
+	 * das Schiff als zerstört, wenn alle seine Teile bereits getroffen worden sind.
+	 *
+	 * @param oc
+	 * 		Spielfeld (Ocean)
+	 */
+	public void checkIfAlreadySunken(Ocean oc)
 	{
 		int shipPartCounter = 0;
 
@@ -62,61 +75,136 @@ public class Ship {
 		this.isDestroyed = (shipPartCounter == this.shipLength);
 	}
 
+	/**
+	 * Gibt die Schiffs -ID wieder
+	 *
+	 * @return
+	 * 		Schiff - ID
+	 */
 	public int getShipID()
 	{
 		return this.shipID;
 	}
 
+	/**
+	 * Gibt die Länge des Schiffes wieder
+	 *
+	 * @return
+	 * 		Schiffslänge
+	 */
 	public int getShipLength()
 	{
 		return this.shipLength;
 	}
 
+	/**
+	 * Gibt die Orientierung des Schiffes wieder.
+	 * true  -> horizontal
+	 * false -> vertikal
+	 *
+	 * @return
+	 * 		Orientierung
+	 */
 	public boolean getOrientation()
 	{
 		return this.orientation;
 	}
 
+	/**
+	 * Gibt den Schiffstypen des Schiffes wieder --> ShipType
+	 *
+	 * @return
+	 * 		Schiffstyp
+	 */
 	public ShipType getShipType()
 	{
 		return this.type;
 	}
 
+	/**
+	 * Gibt den Wert des Ankerpunktes auf der X-Achse wieder
+	 *
+	 * @return
+	 * 		Punkt auf der X-Achse
+	 */
 	public int getAnchorX()
 	{
 		return this.anchorX;
 	}
 
+	/**
+	 * Setzt den Ankerpunkt auf der X -Achse neu
+	 *
+	 * @param x
+	 * 		Neuer Punkt auf der X-Achse
+	 */
 	public void setAnchorX(int x)
 	{
 		this.anchorX = x;
 	}
 
+	/**
+	 * Gibt den Wert des Ankerpunktes auf der Y-Achse wieder
+	 *
+	 * @return
+	 * 		Punkt auf der Y-Achse
+	 */
 	public int getAnchorY()
 	{
 		return this.anchorY;
 	}
 
+	/**
+	 * Setzt den Ankerpunkt auf der Y -Achse neu
+	 *
+	 * @param y
+	 * 		Neuer Punkt auf der Y-Achse
+	 */
 	public void setAnchorY(int y)
 	{
 		this.anchorY = y;
 	}
 
+	/**
+	 * Gibt wieder ob ein Schiff zerstört ist
+	 *
+	 * @return
+	 * 		Schiff ist zerstört oder nicht
+	 */
 	public boolean getIsDestroyed()
 	{
 		return this.isDestroyed;
 	}
 
+	/**
+	 * Markiert ein Schiff als zerstört
+	 */
 	public void setIsDestroyed()
 	{
 		this.isDestroyed = true;
 	}
 
+	/**
+	 * Markiert ein Schiff so, dass es Spiegelverkehrt auf das Spielfeld (Ocean)
+	 * gesetzt wird.
+	 *
+	 * @param r
+	 * 		true  -> wird spiegelverkehrt gesetzt
+	 * 		false -> wird normal gesetzt
+	 */
 	public void setReverse (boolean r)
 	{
 		this.reverse = r;
 	}
 
+	/**
+	 * Gibt wieder, ob das Schiff spiegelverkehrt auf das Spielfeld
+	 * gesetzt wird.
+	 *
+	 * @return
+	 * 		true  -> wird spiegelverkehrt gesetzt
+	 * 		false -> wird normal gesetzt
+	 */
 	public boolean getReverse()
 	{
 		return this.reverse;
