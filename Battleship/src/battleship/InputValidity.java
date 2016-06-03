@@ -1,29 +1,32 @@
 package battleship;
 
+/**
+ * Benutzereingaben werden auf Gültigkeit geprüft
+ *
+ * @author oliver2
+ */
 import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
 public class InputValidity {
-	private int minValue = 0, maxValue = 0, xCoord = 0, yCoord = 0;
+	private int xCoord = 0, yCoord = 0;
 	private String input = "";
+
+	InputValidity ()
+	{
+
+	}
 
 	InputValidity (String input)
 	{
-		this.input = input;
-	}
-
-	InputValidity (int min, int max, String input)
-	{
-		this.minValue 	= min;
-		this.maxValue 	= max;
 		this.input		= input;
 	}
 
 
 	public boolean validInputPattern( int fieldSize)
 	{
-		/*  Die Eingabe wird auf ein Bestimmtes Muster untersucht, welches Leerzeichen erlaubt
+		/**  Die Eingabe wird auf ein Bestimmtes Muster untersucht, welches Leerzeichen erlaubt
 		 *  \p{Blank}*	- Leerzeichen				| keins oder mehrmals
 		 *  \d{1,2}		- [0-9] 					| ein oder zwei mal aufeinanderfolgend
 		 *  \p{Alpha}	- Groß- und Kleinbuchstaben	| einmal
@@ -41,13 +44,13 @@ public class InputValidity {
 			{
 				c = this.input.charAt(1);
 					x = Integer.parseInt(this.input.substring(0,1));
-					y = ((int)c)-96;
+					y = (c)-96;
 				}
 				else if (Pattern.matches("\\d\\d\\p{Alpha}", this.input))
 				{
 					c = this.input.charAt(2);
 					x = Integer.parseInt(this.input.substring(0,2));
-					y = ((int)c)-96;
+					y = (c)-96;
 				}
 				else
 				{
@@ -63,13 +66,13 @@ public class InputValidity {
 				{
 					c = this.input.charAt(0);
 					x = Integer.parseInt(this.input.substring(1,3));
-					y = ((int)c)-96;
+					y = (c)-96;
 				}
 				else if (Pattern.matches("\\p{Alpha}\\d", this.input))
 				{
 					c = this.input.charAt(0);
 					x = Integer.parseInt(this.input.substring(1));
-					y = ((int)c)-96;
+					y = (c)-96;
 				}
 				else
 				{
@@ -111,26 +114,6 @@ public class InputValidity {
 			return valid;
 	}
 
-	public void setMinValue(int min)
-	{
-		this.minValue = min;
-	}
-
-	public int getMinValue()
-	{
-		return this.minValue;
-	}
-
-	public void setMaxValue(int max)
-	{
-		this.maxValue = max;
-	}
-
-	public int getMaxValue()
-	{
-		return this.maxValue;
-	}
-
 	public void setX( int x)
 	{
 		this.xCoord = x;
@@ -163,20 +146,20 @@ public class InputValidity {
 
 
 
-	public boolean validInteger()
+	public boolean validInteger(int min, int max)
 	{
 		int number =  0;
 
 		try
 		{
-			number = Integer.parseInt(input);
+			number = Integer.parseInt(this.input);
 		}
 		catch (Exception e)
 		{
 			return false;
 		}
 
-		return ((number >= minValue) && (number <= maxValue));
+		return ((number >= min) && (number <= max));
 	}
 
 	public int getInteger()

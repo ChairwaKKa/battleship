@@ -1,41 +1,91 @@
 package battleship;
 
+/**
+ * Verwaltung von Konstanten,
+ * Generieren von Zufallswerten,
+ * Prüfalgorithmen,
+ * Setzen von Randfeldern
+ *
+ * @author oliver2
+ */
 import java.util.Random;
 
 public class GameLogic {
 
-	// Konstanten für die Orientierung
+	/**
+	 * Konstanten für die Orientierung
+	 */
 	public final static boolean horizontal = true;
 	public final static boolean vertical = false;
 
-	// Konstanten für die Konsolensymbole
+	/**
+	 * Konstanten für die Konsolensymbole
+	 */
 	public final static String water    = " ~ ";
 	public final static String hitWater = " / ";
 	public final static String hitShip  = " X ";
 	public final static String sinkShip = " V ";
 	public final static String space    = "   ";
 
-	// Ein Random Objekt wird erzeugt
+	/**
+	 *  Ein Random Objekt wird erzeugt
+	 */
 	public static Random random = new Random();
 
-	// Höhe und Breite der Kästchen für die grafische Darstellung
+	/**
+	 *  Höhe und Breite der Kästchen für die grafische Darstellung
+	 */
 	public static int height = 20;	// Höhe
 	public static int width = 20;	// Breite
 
-	// Es wird eine zufällige ganze Zahl ausgegeben
+	/**
+	 *  Es wird eine zufällige ganze Zahl im Bereich von 1 bis Spielfeldgröße erzeugt
+	 *
+	 * @return
+	 * 		Zufallszahl
+	 */
 	public static int generateRandomInt()
 	{
 		return (random.nextInt((Ocean.size-2))+1);
 	}
 
-	// Es wird ein zufälliger boolscher Wert ausgegeben
+	/**
+	 * Es wird eine zufällige Zahl von 0 bis 1 erzeugt
+	 *
+	 * @return
+	 * 		0 oder 1
+	 */
 	public static boolean generateRandomBool()
 	{
 		return random.nextBoolean();
 	}
 
-	/*
-	 * Es wird geprüft ob mit den gegebenen Werten ein Schiff gesetzt werden kann
+	/**
+	 * Prüfalgorithmus für ein Schiff (Ship), um es
+	 * auf das Spielfeld (Ocean) zu setzen.
+	 *
+	 * @param x
+	 * 		Ankerpunkt des Schiffes auf der X -Achse
+	 *
+	 * @param y
+	 * 		Ankerpunkt des Schiffes auf der Y -Achse
+	 *
+	 * @param oc
+	 * 		Spielfeld (Ocean)
+	 *
+	 * @param orientation
+	 * 		Oreientierung
+	 * 		true -> horizontal
+	 * 		false-> vertikal
+	 *
+	 * @param shipSize
+	 * 		Schiffslänge
+	 *
+	 * @param ship
+	 * 		Schiff --> Ship --> ShipType
+	 *
+	 * @return
+	 * 		Das Schiff kann gesetzt werden oder nicht
 	 */
 	public static boolean shipCanBeSetOnField(int x, int y, Ocean oc, boolean orientation, int shipSize, Ship ship)
 	{
@@ -131,10 +181,31 @@ public class GameLogic {
 		return placeable;
 	}
 
-	/*
-	 * Es werden um ein gesetztes Schiff Randfelder gelegt
+	/**
+	 * Wenn ein Schiff auf das Spielfeld (Ocean) gesetzt wurde, werden
+	 * um die Schiffsteile Randteile erzeugt.
+	 *
+	 * @param oc
+	 * 		Spielfeld (Ocean)
+	 *
+	 * @param orientation
+	 * 		Orientierung
+	 * 		true -> horizontal
+	 * 		false-> vertikal
+	 *
+	 * @param anchorX
+	 * 		Ankerpunkt auf der X -Achse
+	 *
+	 * @param anchorY
+	 * 		Ankerpunkt auf der Y -Achse
+	 *
+	 * @param shipSize
+	 * 		Schiffslänge
+	 *
+	 * @param reverse
+	 * 		true -> Schiff wird spiegelverkehrt gesetzt
+	 * 		false-> Schiff wird normal gesetzt (nach rechts, bzw unten)
 	 */
-
 	public static void setShipBorder(Ocean oc, boolean orientation, int anchorX, int anchorY, int shipSize, boolean reverse)
 	{
 
@@ -218,10 +289,5 @@ public class GameLogic {
 		{
 			System.out.print("ERROR: GameLogic : setShipBorder");
 		}
-
-
-
 	}
-
-
 }

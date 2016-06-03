@@ -1,10 +1,11 @@
 package battleship;
 
+/**
+ * Eine Flotte setzt sich aus mehreren Schiffen (--> Ship) zusammen
+ *
+ * @author oliver2
+ */
 import java.util.ArrayList;
-
-import battleship.Ship;
-import battleship.GameLogic;
-import battleship.ShipPart;
 
 public class Fleet {
 	private int placeableShipParts = 0;
@@ -12,11 +13,20 @@ public class Fleet {
 
 	public ArrayList<Ship> fleet = new ArrayList<Ship>();
 
+	/**
+	 * Die Flotte wird abhängig von der Spielfeldgröße erstellt.
+	 * Die Schiffe sind unter --> ShipType definiert.
+	 * 30% der Spielfelder sind Schiffsteile.
+	 *
+	 *
+	 * @param fieldSize
+	 * 		Spielfeldgröße
+	 */
+
 	Fleet(int fieldSize)
 	{
-		placeableShipParts = (int) (0.3 *  fieldSize * fieldSize);
+		placeableShipParts = (int) (0.3 * fieldSize * fieldSize);
 
-//System.out.print("Frei platzierbare Schiffsteile: " + placeableShipParts + "\n");
 		do
 		{
 			if (placeableShipParts >= ShipType.Battleship.getSize())
@@ -57,9 +67,14 @@ public class Fleet {
 			}
 
 		} while (placeableShipParts >  ShipType.Submarine.getSize());
-//System.out.print("Es wurden " + totalNumberOfShips + " Schiffe der Flotte hinzugefügt.\nEs sind noch "+placeableShipParts + " freie Felder übrig.\n" );
 	}
 
+	/**
+	 * Die Schiffe der Flotte werden nacheinander auf das Spielfeld (Ocean) gelegt
+	 *
+	 * @param oc
+	 * 		Spielfeld (Ocean)
+	 */
 	public void setFleet (Ocean oc)
 	{
 		boolean orientation = true;								// true -> horizontal aufs Feld; false -> vertikal aufs Feld
@@ -67,7 +82,7 @@ public class Fleet {
 		boolean reverse = false;
 		int anchorX = 0, anchorY = 0;							// Ankerpunkte des Schiffes
 
-		for (Ship ship : fleet)									// Es wird durch die Flotte durchiteriert und jedes Schiff aufs Feld gesetzt
+		for (Ship ship : this.fleet)									// Es wird durch die Flotte durchiteriert und jedes Schiff aufs Feld gesetzt
 		{
 			reverse			= false;
 			int shipSize 	= ship.getShipLength();
@@ -134,20 +149,36 @@ public class Fleet {
 		}
 	}
 
+	/**
+	 *Die Schiffe der Flotte werden nacheinander geprüft, ob sie bereits gesunken sind
+	 *und wenn ja, werden sie sowohl als zerstört gesetzt, als auch aus der Flotte entfernt.
+	 *
+	 * @param oc
+	 * 		Spielfeld (Ocean)
+	 */
 	public void checkFleet(Ocean oc)
 	{
-		for (int i = 0; i < this.fleet.size(); i++)
+		for (Ship ship : this.fleet)
 		{
-			this.fleet.get(i).alreadySunk(oc);
-			if (this.fleet.get(i).getIsDestroyed())
+			ship.checkIfAlreadySunken(oc);
+			if (ship.getIsDestroyed())
 			{
-				changeVisualForSunkShips(oc, this.fleet.get(i));
-				this.fleet.remove(i);
+				changeVisualForSunkenShips(oc, ship);
+				this.fleet.remove(ship.getShipID() -1);
 			}
 		}
 	}
 
-	public void changeVisualForSunkShips(Ocean oc, Ship ship)
+	/**
+	 * Die Darstellung wird für ein zerstörtes Schiff geändert
+	 *
+	 * @param oc
+	 * 		Spielfeld (Ocean)
+	 *
+	 * @param ship
+	 * 		Schiff --> Ship --> ShipType
+	 */
+	public void changeVisualForSunkenShips(Ocean oc, Ship ship)
 	{
 		for (int x = 0; x < oc.ocean.length; x++)
 			for (int y= 0; y < oc.ocean[x].length; y++)
@@ -159,11 +190,23 @@ public class Fleet {
 			}
 	}
 
-	public boolean isDefeted()
+	/**
+	 * Gibt wieder, ob die Flotte besiegt worden ist
+	 *
+	 * @return
+	 * 		Besiegt oder nicht
+	 */
+	public boolean isDefeated()
 	{
 		return (this.fleet.size() == 0);
 	}
 
+	/**
+	 * Gibt die aktuelle Anzahl an Schiffen wieder
+	 *
+	 * @return
+	 * 		Anzahl der übrigen Schiffe
+	 */
 	public int getNumberOfShips()
 	{
 		return this.fleet.size();
